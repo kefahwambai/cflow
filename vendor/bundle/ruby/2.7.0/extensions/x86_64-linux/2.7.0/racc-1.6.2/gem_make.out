@@ -1,0 +1,17 @@
+current directory: /home/moringa/Development/phase-5/CodeOverflow/vendor/bundle/ruby/2.7.0/gems/racc-1.6.2/ext/racc/cparse
+/home/moringa/.rbenv/versions/2.7.4/bin/ruby -I /home/moringa/.rbenv/versions/2.7.4/lib/ruby/2.7.0 -r ./siteconf20230413-59243-1u0v9sy.rb extconf.rb
+checking for rb_block_call()... yes
+checking for rb_ary_subseq()... yes
+creating Makefile
+
+current directory: /home/moringa/Development/phase-5/CodeOverflow/vendor/bundle/ruby/2.7.0/gems/racc-1.6.2/ext/racc/cparse
+make "DESTDIR=" clean
+
+current directory: /home/moringa/Development/phase-5/CodeOverflow/vendor/bundle/ruby/2.7.0/gems/racc-1.6.2/ext/racc/cparse
+make "DESTDIR="
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /home/moringa/Development/phase-5/CodeOverflow/vendor/bundle/ruby/2.7.0/gems/racc-1.6.2/ext/racc/cparse
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20230413-59243-8qlb52/racc
