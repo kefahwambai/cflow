@@ -13,4 +13,5 @@ Rails.application.routes.draw do
     resources :tags, only: [:index]
   end
 
+  get '*path', to: "static_pages#frontend_index"
 end
