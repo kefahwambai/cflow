@@ -10,42 +10,77 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_12_155255) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_18_201250) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "problems", force: :cascade do |t|
-    t.integer "user_id"
-    t.text "problem_description"
-    t.string "tags"
+  create_table "answers", force: :cascade do |t|
+    t.bigint "answerer_id", null: false
+    t.bigint "question_id", null: false
+    t.text "description", null: false
+    t.bigint "editor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["answerer_id"], name: "index_answers_on_answerer_id"
+    t.index ["editor_id"], name: "index_answers_on_editor_id"
+    t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
-  create_table "solutions", force: :cascade do |t|
-    t.integer "problem_id"
-    t.integer "user_id"
-    t.text "solution_description"
-    t.string "tags"
-    t.boolean "highlighted_by"
+  create_table "questions", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", null: false
+    t.integer "views", default: 0, null: false
+    t.bigint "author_id", null: false
+    t.bigint "editor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_questions_on_author_id"
+    t.index ["editor_id"], name: "index_questions_on_editor_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "tag_id", null: false
+    t.bigint "question_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_taggings_on_question_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.text "email"
-    t.string "password_digest"
+    t.string "display_name", null: false
+    t.string "email", null: false
+    t.string "password_digest", null: false
+    t.string "session_token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["session_token"], name: "index_users_on_session_token", unique: true
   end
 
   create_table "votes", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "solution_id"
-    t.integer "vote_type"
+    t.bigint "voter_id", null: false
+    t.bigint "post_id", null: false
+    t.boolean "vote", null: false
+    t.boolean "post_type", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_votes_on_post_id"
+    t.index ["voter_id"], name: "index_votes_on_voter_id"
   end
 
+  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "users", column: "answerer_id"
+  add_foreign_key "answers", "users", column: "editor_id"
+  add_foreign_key "questions", "users", column: "author_id"
+  add_foreign_key "questions", "users", column: "editor_id"
+  add_foreign_key "taggings", "questions"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "votes", "users", column: "voter_id"
 end
